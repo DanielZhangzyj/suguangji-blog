@@ -93,7 +93,7 @@ export default function Home() {
             <div className="hero-report__stats" aria-label={BLOG_OVERVIEW}>
               <div><strong>{articles.length}</strong><span>{ARTICLES_LABEL}</span></div>
               <div><strong>3</strong><span>{SECTIONS_LABEL}</span></div>
-              <div><strong>6</strong><span>{LOCAL_IMAGES_LABEL}</span></div>
+              <div><strong>{articles.length}</strong><span>{LOCAL_IMAGES_LABEL}</span></div>
             </div>
           </div>
 
