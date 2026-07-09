@@ -1,4 +1,4 @@
-﻿import type { Article } from '@/types';
+import type { Article } from '@/types';
 
 export const categoryMeta = {
   work: {
@@ -21,6 +21,7 @@ export const categoryMeta = {
 export const articles: Article[] = [
   {
     id: 'market-entry-review',
+    imageSrc: '/article-images/market-entry-review.png',
     title: '从区域市场复盘看增长质量',
     excerpt: '一次区域销售复盘让我意识到，增长不是把数字做大，而是把增长来源、客户结构和后续履约能力放在同一张表里审视。',
     content: `## 问题背景
@@ -49,6 +50,7 @@ export const articles: Article[] = [
   },
   {
     id: 'team-operating-rhythm',
+    imageSrc: '/article-images/team-operating-rhythm.png',
     title: '把团队管理从催进度改成建节奏',
     excerpt: '管理销售团队时，真正稳定的执行力不是靠频繁催促，而是靠清楚的节奏、透明的数据和及时的复盘。',
     content: `## 从控制到节奏
@@ -76,6 +78,7 @@ export const articles: Article[] = [
   },
   {
     id: 'ai-workflow-notes',
+    imageSrc: '/article-images/ai-workflow-notes.png',
     title: '用 AI 重做个人工作流的三个入口',
     excerpt: 'AI 对我最大的价值不是替代某个岗位，而是把信息整理、草稿生成和思路校验这三件事变得更快。',
     content: `## 不是工具清单
@@ -103,6 +106,7 @@ export const articles: Article[] = [
   },
   {
     id: 'duckdb-learning-log',
+    imageSrc: '/article-images/duckdb-learning-log.png',
     title: 'DuckDB 让我重新理解本地数据分析',
     excerpt: '从 Excel 切换到 DuckDB 的过程，让我第一次感受到本地分析也可以轻量、快速、可复用。',
     content: `## 为什么开始学
@@ -130,6 +134,7 @@ DuckDB 的吸引力在于它不需要复杂服务，直接读 CSV 和 Parquet，
   },
   {
     id: 'personal-energy-accounting',
+    imageSrc: '/article-images/personal-energy-accounting.png',
     title: '把精力当成账户来管理',
     excerpt: '时间管理解决的是排期问题，精力管理解决的是质量问题。真正影响产出的，往往不是有没有时间，而是有没有状态。',
     content: `## 时间不等于产出
@@ -157,6 +162,7 @@ DuckDB 的吸引力在于它不需要复杂服务，直接读 CSV 和 Parquet，
   },
   {
     id: 'long-term-compounding',
+    imageSrc: '/article-images/long-term-compounding.png',
     title: '长期主义不是慢，而是减少反复归零',
     excerpt: '很多成长看起来很慢，是因为它在搭建可复利的底层能力；很多快速变化看起来热闹，却不断让人重新开始。',
     content: `## 对长期主义的误解

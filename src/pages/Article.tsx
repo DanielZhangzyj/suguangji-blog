@@ -1,4 +1,4 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, CalendarDays, Clock, Tag } from 'lucide-react';
 import Header from '@/components/Header';
@@ -75,6 +75,10 @@ export default function Article() {
             </div>
             <h1>{article.title}</h1>
             <p className="article-deck">{article.excerpt}</p>
+
+            <figure className="article-hero-image">
+              <img src={article.imageSrc} alt={`${article.title}配图`} />
+            </figure>
 
             <div className="takeaway-box">
               <span>核心结论</span>

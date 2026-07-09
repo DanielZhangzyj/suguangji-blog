@@ -1,10 +1,14 @@
 import { Link, useLocation, useNavigate } from 'react-router';
 import { BarChart3 } from 'lucide-react';
 
+const BRAND = '\u4e39\u5c3c\u5c14\u7684\u7b14\u8bb0\u4ed3\u5e93';
+const HOME_LABEL = '\u8fd4\u56de\u9996\u9875';
+const NAV_LABEL = '\u6587\u7ae0\u5206\u7c7b';
+
 const navItems = [
-  { id: 'work', label: '工作心得' },
-  { id: 'learning', label: '学习分享' },
-  { id: 'growth', label: '个人成长' },
+  { id: 'work', label: '\u5de5\u4f5c\u5fc3\u5f97' },
+  { id: 'learning', label: '\u5b66\u4e60\u5206\u4eab' },
+  { id: 'growth', label: '\u4e2a\u4eba\u6210\u957f' },
 ];
 
 export default function Header() {
@@ -24,12 +28,12 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link to="/" className="brand" aria-label="返回首页">
+        <Link to="/" className="brand" aria-label={HOME_LABEL}>
           <span className="brand__mark"><BarChart3 size={18} /></span>
-          <span>丹尼尔的笔记仓库</span>
+          <span>{BRAND}</span>
         </Link>
 
-        <nav className="top-nav" aria-label="文章分类">
+        <nav className="top-nav" aria-label={NAV_LABEL}>
           {navItems.map((item) => (
             <button key={item.id} type="button" onClick={() => goToSection(item.id)}>
               {item.label}

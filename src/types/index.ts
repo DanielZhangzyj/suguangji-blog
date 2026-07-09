@@ -1,6 +1,7 @@
-﻿export interface Article {
+export interface Article {
   id: string;
   title: string;
+  imageSrc: string;
   excerpt: string;
   content: string;
   category: 'work' | 'learning' | 'growth';
