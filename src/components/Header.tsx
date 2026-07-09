@@ -1,80 +1,40 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+﻿import { Link, useLocation, useNavigate } from 'react-router';
+import { BarChart3 } from 'lucide-react';
+
+const navItems = [
+  { id: 'work', label: '工作心得' },
+  { id: 'learning', label: '学习分享' },
+  { id: 'growth', label: '个人成长' },
+];
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
 
+  const goToSection = (id: string) => {
+    if (!isHome) {
+      navigate('/');
+      window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
-    <header
-      className="fixed top-0 left-0 w-full z-50 transition-all duration-500"
-      style={{
-        backgroundColor: scrolled ? 'rgba(5, 5, 7, 0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-      }}
-    >
-      <div className="flex items-center justify-between px-8 md:px-16 py-6">
-        <Link
-          to="/"
-          className="font-serif-display text-xl md:text-2xl tracking-tight"
-          style={{ color: 'var(--color-text)' }}
-        >
-          溯光记
+    <header className="site-header">
+      <div className="site-header__inner">
+        <Link to="/" className="brand" aria-label="返回首页">
+          <span className="brand__mark"><BarChart3 size={18} /></span>
+          <span>溯光记</span>
         </Link>
 
-        <nav className="flex items-center gap-8 md:gap-12">
-          {isHome ? (
-            <>
-              <a
-                href="#archive"
-                className="font-mono-label text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 hover:opacity-70"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                归档
-              </a>
-              <a
-                href="#about"
-                className="font-mono-label text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 hover:opacity-70"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                关于
-              </a>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/#archive"
-                className="font-mono-label text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 hover:opacity-70"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                归档
-              </Link>
-              <Link
-                to="/#about"
-                className="font-mono-label text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 hover:opacity-70"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                关于
-              </Link>
-            </>
-          )}
-          <a
-            href="#subscribe"
-            className="font-mono-label text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 hover:opacity-70"
-            style={{ color: 'var(--color-accent-teal)' }}
-          >
-            订阅
-          </a>
+        <nav className="top-nav" aria-label="文章分类">
+          {navItems.map((item) => (
+            <button key={item.id} type="button" onClick={() => goToSection(item.id)}>
+              {item.label}
+            </button>
+          ))}
         </nav>
       </div>
     </header>
