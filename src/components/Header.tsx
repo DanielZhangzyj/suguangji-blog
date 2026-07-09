@@ -1,4 +1,4 @@
-﻿import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { BarChart3 } from 'lucide-react';
 
 const navItems = [
@@ -26,7 +26,7 @@ export default function Header() {
       <div className="site-header__inner">
         <Link to="/" className="brand" aria-label="返回首页">
           <span className="brand__mark"><BarChart3 size={18} /></span>
-          <span>溯光记</span>
+          <span>丹尼尔的笔记仓库</span>
         </Link>
 
         <nav className="top-nav" aria-label="文章分类">

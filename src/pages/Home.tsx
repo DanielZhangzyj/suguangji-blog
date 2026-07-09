@@ -1,4 +1,4 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router';
 import { ArrowUpRight, BookOpen, BriefcaseBusiness, ChartNoAxesCombined, GraduationCap, LineChart, UserRound } from 'lucide-react';
 import Header from '@/components/Header';
@@ -95,7 +95,7 @@ export default function Home() {
         <section className="hero-report">
           <div className="hero-report__copy">
             <span className="eyebrow"><LineChart size={16} /> Research Notes / 2026</span>
-            <h1>溯光记</h1>
+            <h1>丹尼尔的笔记仓库</h1>
             <p>
               用研报式结构记录工作复盘、学习输入和个人成长。少一点装饰，多一点清楚的判断、方法和可复用的结论。
             </p>
