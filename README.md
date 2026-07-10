@@ -4,8 +4,9 @@
 
 ## 在线访问
 
-- Cloudflare Pages: https://danielsdailynote.pages.dev
-- 原 Pages 项目来源仓库: https://github.com/DanielZhangzyj/suguangji-blog
+- 腾讯云 CloudBase 静态托管：https://personalblog-d7ggzu6pz6dc10743-1321560445.tcloudbaseapp.com/
+- 原 Cloudflare Pages（待下线）：https://danielsdailynote.pages.dev
+- 项目来源仓库：https://github.com/DanielZhangzyj/suguangji-blog
 
 ## 技术栈
 
@@ -32,4 +33,9 @@ npm run build
 
 ## 部署
 
-当前站点部署在 Cloudflare Pages，生产分支为 `main`，构建命令为 `npm run build`，输出目录为 `dist`。
+当前站点部署在**腾讯云 CloudBase 静态托管**（环境 `personalblog-d7ggzu6pz6dc10743`，上海地域，体验版）。
+
+- 构建：`npm run build`，输出目录 `dist`
+- 部署：将 `dist/` 下全部文件上传至 CloudBase 静态托管根目录（首页/错误页均设为 `index.html`）
+- 路由：本项目使用 `HashRouter`，链接走 `#`，无需服务端 history 回退
+- 控制台：https://tcb.cloud.tencent.com/dev?envId=personalblog-d7ggzu6pz6dc10743#/static-hosting
