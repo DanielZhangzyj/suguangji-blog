@@ -656,31 +656,32 @@
 
   .article-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 18px;
   }
 
-  /* demo Projects 卡片化：封面 hover 放大 + 蓝分类标签 + 2 行截断 */
   .article-card {
     display: flex;
     flex-direction: column;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 12px 34px rgba(25, 64, 112, 0.1);
+    backdrop-filter: blur(14px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   }
 
   .article-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 56px rgba(25, 64, 112, 0.18);
-    border-color: rgba(29, 78, 216, 0.5);
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 24px 64px rgba(25, 64, 112, 0.18);
+    border-color: rgba(29, 78, 216, 0.42);
   }
 
   .article-card__media {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 8.7;
     overflow: hidden;
     background: var(--surface-soft);
   }
@@ -713,14 +714,14 @@
   .article-card__body {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 18px 18px 20px;
+    gap: 8px;
+    padding: 14px 15px 16px;
     flex: 1;
   }
 
   .article-card__title {
     margin: 0;
-    font-size: 21px;
+    font-size: 18px;
     line-height: 1.3;
     color: var(--ink);
     display: -webkit-box;
@@ -733,8 +734,8 @@
   .article-card__excerpt {
     margin: 0;
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 13.5px;
+    line-height: 1.62;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -747,7 +748,7 @@
     gap: 8px;
     flex-wrap: wrap;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.02em;
   }
@@ -759,17 +760,17 @@
   .tag-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
+    gap: 6px;
+    margin-top: 12px;
   }
 
   .tag-list span {
     border: 1px solid var(--line);
     border-radius: 999px;
     color: var(--blue-dark);
-    background: var(--surface-soft);
-    padding: 4px 10px;
-    font-size: 12px;
+    background: rgba(239, 246, 255, 0.72);
+    padding: 3px 9px;
+    font-size: 11.5px;
     font-weight: 700;
   }
 

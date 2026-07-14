@@ -109,9 +109,7 @@ export default function Home() {
           <div className="hero__copy">
             <p className="eyebrow shiny">Research Notes · 2026</p>
             <h1 className="hero__title">
-              把工作复盘、<br />
-              学习方法<br />
-              写进<span className="shiny"> 我的地盘</span>
+              Daniel&apos;s <span className="shiny">Notebook</span>
             </h1>
             <p className="hero__lead">
               用研究式结构记录工作复盘、学习输入和个人成长。多
