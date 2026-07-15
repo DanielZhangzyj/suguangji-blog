@@ -947,6 +947,21 @@
     color: var(--blue-dark);
   }
 
+  .site-footer__record {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--muted) !important;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-color: rgba(29, 78, 216, 0.3);
+    text-underline-offset: 3px;
+  }
+
+  .site-footer__record:hover {
+    color: var(--blue) !important;
+  }
+
   @media (max-width: 900px) {
     .site-header__inner {
       align-items: flex-start;
