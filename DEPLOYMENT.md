@@ -1,26 +1,22 @@
 # Deployment
 
-Production source of truth: the main branch of GitHub.
+Production source of truth: the local repository and its `main` branch on GitHub.
 
 - Repository: DanielZhangzyj/suguangji-blog
-- Cloudflare Pages: danielsdailynote (GitHub integration enabled)
+- Cloudflare Pages: danielsdailynote
 - CloudBase environment: personalblog-d7ggzu6pz6dc10743
 - CloudBase static hosting: personalblog-d7ggzu6pz6dc10743-1321560445.tcloudbaseapp.com
 - CloudBase CloudRun service: blog
 - Lighthouse site root: /var/www/suguangji-blog
 
-Every push to main runs .github/workflows/deploy.yml. The workflow builds once, then publishes the same artifact to CloudBase hosting, CloudBase CloudRun, and the Lighthouse nginx site. Cloudflare Pages deploys automatically from the same GitHub push through its existing Git integration.
+Use `scripts/deploy-direct.ps1` for releases. It builds once locally, syncs the release to GitHub, then publishes the same artifact directly to Cloudflare Pages, CloudBase hosting, CloudBase CloudRun, and the Lighthouse nginx site. GitHub is retained as the code backup and review history, not as the deployment trigger.
 
-## GitHub Actions secrets
+The GitHub Actions workflow is kept as a manual quality-check fallback only. It is intentionally not triggered by a push to `main`.
 
-Configure these repository secrets in GitHub Settings > Secrets and variables > Actions:
+## Direct release
 
-- TCB_ENV_ID: personalblog-d7ggzu6pz6dc10743
-- TCB_API_KEY_ID: CloudBase API key ID for CI
-- TCB_API_KEY: CloudBase API key for CI
-- LIGHTHOUSE_HOST: 115.159.67.196
-- LIGHTHOUSE_USER: the SSH user authorized for deployment
-- LIGHTHOUSE_PORT: 22
-- LIGHTHOUSE_SSH_PRIVATE_KEY: private key matching the public key installed on the server
+```powershell
+.\scripts\deploy-direct.ps1
+```
 
-Never commit API keys or private keys. After these secrets are configured, a push to main is the only release action needed.
+The script expects the local Cloudflare Wrangler login, CloudBase CLI login, and SSH alias `daniel-lighthouse-root` to be available. It stops immediately if any publishing target fails, so a failed deployment is never silently ignored.

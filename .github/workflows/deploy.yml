@@ -1,130 +1,21 @@
-name: Deploy Blog
+name: Quality Check
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-
-concurrency:
-  group: blog-production
-  cancel-in-progress: true
 
 jobs:
   quality:
     name: Quality and build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Build
-        run: npm run build
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-
-  deploy-cloudbase-hosting:
-    name: Deploy CloudBase hosting
-    needs: quality
-    runs-on: ubuntu-latest
-    env:
-      TCB_ENV_ID: \${{ secrets.TCB_ENV_ID }}
-      TCB_API_KEY_ID: \${{ secrets.TCB_API_KEY_ID }}
-      TCB_API_KEY: \${{ secrets.TCB_API_KEY }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Login to CloudBase
-        run: npx -y -p @cloudbase/cli tcb login --apiKeyId "$TCB_API_KEY_ID" --apiKey "$TCB_API_KEY"
-      - name: Upload static hosting
-        run: npx -y -p @cloudbase/cli tcb hosting deploy ./dist --env-id "$TCB_ENV_ID" --json
-
-  deploy-cloudbase-cloudrun:
-    name: Deploy CloudBase CloudRun
-    needs: quality
-    runs-on: ubuntu-latest
-    env:
-      TCB_ENV_ID: \${{ secrets.TCB_ENV_ID }}
-      TCB_API_KEY_ID: \${{ secrets.TCB_API_KEY_ID }}
-      TCB_API_KEY: \${{ secrets.TCB_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-      - name: Replace CloudRun public files
-        run: |
-          rm -rf cloudrun/blog/public/*
-          cp -R dist/. cloudrun/blog/public/
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Login to CloudBase
-        run: npx -y -p @cloudbase/cli tcb login --apiKeyId "$TCB_API_KEY_ID" --apiKey "$TCB_API_KEY"
-      - name: Deploy CloudRun canary
-        run: npx -y -p @cloudbase/cli tcb cloudrun deploy --serviceName blog --source ./cloudrun/blog --port 8080 --env-id "$TCB_ENV_ID" --traffic --force --json
-      - name: Promote CloudRun
-        run: npx -y -p @cloudbase/cli tcb cloudrun traffic promote --serviceName blog --env-id "$TCB_ENV_ID" --json
-
-  deploy-lighthouse:
-    name: Deploy Tencent Lighthouse
-    needs: quality
-    runs-on: ubuntu-latest
-    env:
-      LIGHTHOUSE_HOST: \${{ secrets.LIGHTHOUSE_HOST }}
-      LIGHTHOUSE_USER: \${{ secrets.LIGHTHOUSE_USER }}
-      LIGHTHOUSE_PORT: \${{ secrets.LIGHTHOUSE_PORT || '22' }}
-      LIGHTHOUSE_SSH_PRIVATE_KEY: \${{ secrets.LIGHTHOUSE_SSH_PRIVATE_KEY }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-      - name: Prepare SSH
-        run: |
-          set -euo pipefail
-          mkdir -p "$HOME/.ssh"
-          printf '%s\n' "$LIGHTHOUSE_SSH_PRIVATE_KEY" > "$HOME/.ssh/deploy_key"
-          chmod 600 "$HOME/.ssh/deploy_key"
-          ssh-keyscan -p "$LIGHTHOUSE_PORT" -H "$LIGHTHOUSE_HOST" >> "$HOME/.ssh/known_hosts"
-      - name: Package site
-        run: tar -czf site.tar.gz -C dist .
-      - name: Upload site
-        run: scp -i "$HOME/.ssh/deploy_key" -P "$LIGHTHOUSE_PORT" site.tar.gz "$LIGHTHOUSE_USER@$LIGHTHOUSE_HOST:/tmp/suguangji-blog-$GITHUB_SHA.tar.gz"
-      - name: Install site and reload nginx
-        run: |
-          set -euo pipefail
-          ssh -i "$HOME/.ssh/deploy_key" -p "$LIGHTHOUSE_PORT" "$LIGHTHOUSE_USER@$LIGHTHOUSE_HOST" \
-            "bash -s -- '$GITHUB_SHA'" <<'REMOTE'
-          set -euo pipefail
-          sha="$1"
-          release="/tmp/suguangji-blog-$sha"
-          if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
-          $SUDO rm -rf "$release"
-          $SUDO mkdir -p "$release"
-          $SUDO tar -xzf "/tmp/suguangji-blog-$sha.tar.gz" -C "$release"
-          $SUDO mkdir -p /var/www/suguangji-blog
-          $SUDO find /var/www/suguangji-blog -mindepth 1 -maxdepth 1 -exec $SUDO rm -rf {} +
-          $SUDO cp -a "$release/." /var/www/suguangji-blog/
-          $SUDO nginx -t
-          $SUDO systemctl reload nginx
-          REMOTE
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
