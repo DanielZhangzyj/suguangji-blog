@@ -12,7 +12,7 @@ export const ihsDashboardArticle: Article = {
   date: '2026-07-21',
   readTime: '20 分钟',
   metric: '428,803 条有效记录',
-  signal: 'China 88,151 条、Global 340,652 条；本地完整性校验与 16 项回归测试全部通过。',
+  signal: 'China 88,151 条、Global 340,652 条；本地完整性校验与 17 项回归测试全部通过。',
   takeaway: '数据看板的真正交付不是页面上线，而是让数据解析、数据库、测试、部署和回滚成为每个月都能安全重跑的标准流程。',
   tags: ['数据看板', 'Python ETL', 'Cloudflare D1', 'ECharts', '项目复盘'],
   featured: true,

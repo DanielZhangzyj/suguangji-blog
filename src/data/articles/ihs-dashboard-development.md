@@ -2,7 +2,7 @@
 
 这个项目的起点很具体：手里有 China Data.xlsx 和 Global Data.xlsx 两份 Mobility Global / IHS Markit 汽车产量预测文件，希望把它们做成一个能够在线筛选、比较和持续更新的数据看板。最终交付的不是一张固定截图，而是一套完整的数据产品链路：原始 Excel 经过 Python 清洗成统一长表，写入 Cloudflare D1 数据库，由 Pages Functions 提供 API，再由原生 JavaScript 和 ECharts 绘制全球地图、中国省份地图、年度产量、趋势、排名和 Program 矩阵。
 
-截至这次复盘，当前版本包含 428,803 条有效产量记录，其中 China 88,151 条、Global 340,652 条。本地数据库完整性检查通过，16 项自动回归测试全部通过，线上版本运行在 [IHS 汽车产量数据看板](https://ihs-dashboard.pages.dev)。
+截至这次复盘，当前版本包含 428,803 条有效产量记录，其中 China 88,151 条、Global 340,652 条。本地数据库完整性检查通过，17 项自动回归测试全部通过，线上版本运行在 [IHS 汽车产量数据看板](https://ihs-dashboard.pages.dev)。
 
 这篇文章不会只罗列用了哪些工具。我更想完整讲清楚：为什么这样设计、数据怎样变形、数据库怎样建立、前后端怎样连接、项目怎样上线，以及以后每个月怎样安全地更新。
 
@@ -169,7 +169,7 @@ git push origin main
 .\scripts\monthly-update.ps1
 ```
 
-预检会读取源文件、校验字段和版本、执行 ETL、构建本地 SQLite、运行 quick_check、核对 JSONL 与数据库记录数、生成 D1 分块、执行 16 项回归测试并构建前端。结果写入 data/update-report.json。
+预检会读取源文件、校验字段和版本、执行 ETL、构建本地 SQLite、运行 quick_check、核对 JSONL 与数据库记录数、生成 D1 分块、执行 17 项回归测试并构建前端。结果写入 data/update-report.json。
 
 确认报告无误后，正式发布：
 
