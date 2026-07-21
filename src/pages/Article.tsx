@@ -1,21 +1,91 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, CalendarDays, Clock, Tag } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { articles, categoryMeta } from '@/data/articles';
 
+function renderInline(value: string): ReactNode[] {
+  const parts: ReactNode[] = [];
+  const pattern = /(\x60[^\x60]+\x60|\[[^\]]+\]\([^)]+\))/g;
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = pattern.exec(value))) {
+    if (match.index > cursor) parts.push(<Fragment key={key++}>{value.slice(cursor, match.index)}</Fragment>);
+    const token = match[0];
+    if (token.startsWith('\x60')) {
+      parts.push(<code className="inline-code" key={key++}>{token.slice(1, -1)}</code>);
+    } else {
+      const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (link) {
+        parts.push(<a href={link[2]} target="_blank" rel="noreferrer" key={key++}>{link[1]}</a>);
+      }
+    }
+    cursor = match.index + token.length;
+  }
+  if (cursor < value.length) parts.push(<Fragment key={key++}>{value.slice(cursor)}</Fragment>);
+  return parts;
+}
+
 function ArticleContent({ content }: { content: string }) {
-  return (
-    <div className="article-content">
-      {content.split('\n').map((line, index) => {
-        const value = line.trim();
-        if (!value) return null;
-        if (value.startsWith('## ')) return <h2 key={index}>{value.slice(3)}</h2>;
-        return <p key={index}>{value}</p>;
-      })}
-    </div>
-  );
+  const lines = content.split('\n');
+  const blocks: ReactNode[] = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const value = lines[index].trim();
+    if (!value) {
+      index += 1;
+      continue;
+    }
+    if (value.startsWith('\x60\x60\x60')) {
+      const language = value.slice(3).trim();
+      const code: string[] = [];
+      index += 1;
+      while (index < lines.length && !lines[index].trim().startsWith('\x60\x60\x60')) {
+        code.push(lines[index]);
+        index += 1;
+      }
+      index += 1;
+      blocks.push(<pre key={blocks.length}><code data-language={language}>{code.join('\n')}</code></pre>);
+      continue;
+    }
+    if (value.startsWith('### ')) {
+      blocks.push(<h3 key={blocks.length}>{renderInline(value.slice(4))}</h3>);
+      index += 1;
+      continue;
+    }
+    if (value.startsWith('## ')) {
+      blocks.push(<h2 key={blocks.length}>{renderInline(value.slice(3))}</h2>);
+      index += 1;
+      continue;
+    }
+    if (/^[-*]\s+/.test(value)) {
+      const items: string[] = [];
+      while (index < lines.length && /^[-*]\s+/.test(lines[index].trim())) {
+        items.push(lines[index].trim().replace(/^[-*]\s+/, ''));
+        index += 1;
+      }
+      blocks.push(<ul key={blocks.length}>{items.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}</ul>);
+      continue;
+    }
+    if (/^\d+\.\s+/.test(value)) {
+      const items: string[] = [];
+      while (index < lines.length && /^\d+\.\s+/.test(lines[index].trim())) {
+        items.push(lines[index].trim().replace(/^\d+\.\s+/, ''));
+        index += 1;
+      }
+      blocks.push(<ol key={blocks.length}>{items.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}</ol>);
+      continue;
+    }
+    blocks.push(<p key={blocks.length}>{renderInline(value)}</p>);
+    index += 1;
+  }
+
+  return <div className="article-content">{blocks}</div>;
 }
 
 export default function Article() {

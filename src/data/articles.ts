@@ -1,4 +1,5 @@
 import type { Article } from '@/types';
+import { ihsDashboardArticle } from './ihs-dashboard-article';
 
 export const categoryMeta = {
   work: {
@@ -19,6 +20,7 @@ export const categoryMeta = {
 } satisfies Record<Article['category'], { label: string; description: string; accent: string }>;
 
 export const articles: Article[] = [
+  ihsDashboardArticle,
   {
     id: 'ai-era-personal-software-revolution',
     imageSrc: '/article-images/ai-personal-software-revolution.png',
