@@ -23,7 +23,7 @@ export const articles: Article[] = [
   {
     id: 'from-skill-framework-to-embedding',
     imageSrc: '/article-images/from-skill-framework-to-embedding.png',
-    title: '从 Skill 框架到 Embedding：一次关于可复用 AI 能力的学习笔记',
+    title: '关于Skill的应用学习',
     excerpt: 'Skill、Workflow、Agent 和 Embedding 经常被放在一起讨论，但它们解决的是不同层次的问题。理解它们的边界，才能把 AI 能力从一次性脚本沉淀为可复用的工作系统。',
     content: `## 我为什么开始关心 Skill 的结构
 最近学习 Skill 相关内容时，我最初把它理解成“给模型加一段提示词或一个脚本”。继续往下看才发现，真正有价值的 Skill 更像一个可以独立运行、被反复调用的小型能力单元。
